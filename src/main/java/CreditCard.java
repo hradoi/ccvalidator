@@ -4,8 +4,8 @@ public class CreditCard {
     private CreditCard() {}
 
     public CreditCard(String number, String date){
-        this.number = number;
-        this.expirationDate = date;
+        this.number = number.trim();
+        this.expirationDate = date.trim();
     }
 
     public String getNumber() {
@@ -19,4 +19,6 @@ public class CreditCard {
     public boolean isValid(){
         return CreditCardValidator.isValid(this);
     }
+
+
 }
