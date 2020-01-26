@@ -5,11 +5,18 @@ public class CreditCard {
 
     public CreditCard(String number, String date){
         this.number = number;
-        this.expirationDate = data;
+        this.expirationDate = date;
     }
 
-    @Override
-    public String toString(){
-        return number + expirationDate;
+    public String getNumber() {
+        return this.number;
+    }
+
+    public String getExpirationDate() {
+        return this.expirationDate;
+    }
+
+    public boolean isValid(){
+        return CreditCardValidator.isValid(this);
     }
 }

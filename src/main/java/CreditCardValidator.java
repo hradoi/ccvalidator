@@ -1,6 +1,7 @@
 public class CreditCardValidator {
+    private CreditCardValidator() {}
 
-    public boolean validateCreditCard(String cardNumber) {
-
+    public static boolean isValid(CreditCard card) {
+        return false;
     }
 }
