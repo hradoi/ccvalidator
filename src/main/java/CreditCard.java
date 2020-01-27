@@ -1,6 +1,13 @@
 public class CreditCard {
     private String number;
     private String expirationDate;
+
+    static enum VALIDATION {
+        VALID,
+        NOT_VALID,
+        BLACKLISTED
+    }
+
     private CreditCard() {}
 
     public CreditCard(String number, String date){
@@ -16,7 +23,9 @@ public class CreditCard {
         return this.expirationDate;
     }
 
-    public boolean isValid(){
-        return CreditCardValidator.isValid(this);
+    public VALIDATION isValid(){
+        return CreditCardValidator.isValid(this) ? VALIDATION.VALID :
+                CreditCardValidator.isOnBlacklist(this) ? VALIDATION.BLACKLISTED :
+                        VALIDATION.NOT_VALID;
     }
 }
