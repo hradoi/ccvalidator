@@ -103,7 +103,6 @@ public class CreditCardTest {
     }
 
     @Test
-    // validated using https://www.datageneratortools.com/card/calculator
     void assertLuhnFormula() {
         assertEquals(CreditCardValidator.computeLuhnDigit("0000 0000 0000 0000"), 0);
         assertEquals(CreditCardValidator.computeLuhnDigit("4556 7375 8689 9855"), 5);
@@ -111,6 +110,8 @@ public class CreditCardTest {
         assertEquals(CreditCardValidator.computeLuhnDigit("1234 1234 1234 1230"), 8);
         assertEquals(CreditCardValidator.computeLuhnDigit("9999 9999 9999 9990"), 5);
         assertEquals(CreditCardValidator.computeLuhnDigit("5513 7427 5112 3840"), 1);
+
+        assertEquals(CreditCardValidator.computeLuhnDigit("1234"), -1);
     }
 
     @Test

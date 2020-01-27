@@ -1,7 +1,4 @@
-//using https://www.openprogrammer.info/2015/01/06/how-to-build-a-restful-service-java-8-sparkjava-in-five-minutes/
 import static spark.Spark.*;
-
-// http://localhost:4567/validate?cardNumber=4510 8166 0257 3952&expirationDate=12/20
 
 public class RESTController
 {
