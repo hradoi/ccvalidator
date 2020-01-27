@@ -19,6 +19,4 @@ public class CreditCard {
     public boolean isValid(){
         return CreditCardValidator.isValid(this);
     }
-
-
 }
