@@ -3,6 +3,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CreditCardTest {
+    @Test
+    void checkCard() {
+        CreditCard cc = new CreditCard("4510 8166 0257 3952", "06/20");
+        assertTrue(CreditCardValidator.isValid(cc));
+    }
 
     @Test
     void createEmptyCard() {
@@ -98,13 +103,14 @@ public class CreditCardTest {
     }
 
     @Test
+    // validated using https://www.datageneratortools.com/card/calculator
     void assertLuhnFormula() {
         assertEquals(CreditCardValidator.computeLuhnDigit("0000 0000 0000 0000"), 0);
         assertEquals(CreditCardValidator.computeLuhnDigit("4556 7375 8689 9855"), 5);
-        assertEquals(CreditCardValidator.computeLuhnDigit("1234 5678 9012 3456"), 8);
-        assertEquals(CreditCardValidator.computeLuhnDigit("1234 1234 1234 1234"), 2);
-        assertEquals(CreditCardValidator.computeLuhnDigit("9999 9999 9999 9999"), 5);
-        assertEquals(CreditCardValidator.computeLuhnDigit("5513 7427 5112 3841"), 5);
+        assertEquals(CreditCardValidator.computeLuhnDigit("1234 5678 9012 3450"), 2);
+        assertEquals(CreditCardValidator.computeLuhnDigit("1234 1234 1234 1230"), 8);
+        assertEquals(CreditCardValidator.computeLuhnDigit("9999 9999 9999 9990"), 5);
+        assertEquals(CreditCardValidator.computeLuhnDigit("5513 7427 5112 3840"), 1);
     }
 
     @Test
@@ -118,7 +124,36 @@ public class CreditCardTest {
     }
 
     @Test
-    void checkExpirationDate() {
+    void checkCorrectDateFormat() {
+        assertTrue(CreditCardValidator.isCorrectDateFormat("01/70"));
+        // OK to be true here
+        assertTrue(CreditCardValidator.isCorrectDateFormat("70/01"));
+        assertTrue(CreditCardValidator.isCorrectDateFormat("00/00"));
+        assertTrue(CreditCardValidator.isCorrectDateFormat("20/20"));
 
+        assertFalse(CreditCardValidator.isCorrectDateFormat("01/01/70"));
+        assertFalse(CreditCardValidator.isCorrectDateFormat("01-70"));
+        assertFalse(CreditCardValidator.isCorrectDateFormat("JAN/70"));
+        assertFalse(CreditCardValidator.isCorrectDateFormat("01/SEVENTY"));
+        assertFalse(CreditCardValidator.isCorrectDateFormat("01 70"));
+    }
+
+    @Test
+    void checkDateInFutureAndCorrectAssumingRightFormat() {
+        assertTrue(CreditCardValidator.isValidDate(new CreditCard("", "01/99")));
+        assertTrue(CreditCardValidator.isValidDate(new CreditCard("","06/20")));
+        assertTrue(CreditCardValidator.isValidDate(new CreditCard("","01/20")));
+        assertTrue(CreditCardValidator.isValidDate(new CreditCard("","02/20")));
+
+        assertFalse(CreditCardValidator.isValidDate(new CreditCard("","13/99")));
+        assertFalse(CreditCardValidator.isValidDate(new CreditCard("","05/12")));
+    }
+
+    @Test
+    void checkBlacklist() {
+        assertTrue(CreditCardValidator.isOnBlacklist(new CreditCard("4788384538552446", "01/70")));
+        assertTrue(CreditCardValidator.isOnBlacklist(new CreditCard("5144 3854 3852 3845", "01/70")));
+
+        assertFalse(CreditCardValidator.isOnBlacklist(new CreditCard("4510 8166 0257 3952", "01/21")));
     }
 }
